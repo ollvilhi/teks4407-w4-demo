@@ -88,6 +88,9 @@ function setupEventListeners() {
     // FAB button
     document.getElementById('fab-add').addEventListener('click', () => openModal());
 
+    // Fullscreen button
+    document.getElementById('fullscreen-btn').addEventListener('click', toggleFullscreen);
+
     // Form submission
     document.getElementById('message-form').addEventListener('submit', handleFormSubmit);
     
@@ -505,4 +508,46 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// Toggle fullscreen mode
+function toggleFullscreen() {
+    const isFullscreen = document.body.classList.contains('fullscreen-mode');
+    
+    if (isFullscreen) {
+        exitFullscreen();
+    } else {
+        enterFullscreen();
+    }
+}
+
+// Enter fullscreen mode
+function enterFullscreen() {
+    document.body.classList.add('fullscreen-mode');
+    
+    // Add exit button if not exists
+    if (!document.getElementById('exit-fullscreen-btn')) {
+        const exitBtn = document.createElement('button');
+        exitBtn.id = 'exit-fullscreen-btn';
+        exitBtn.className = 'exit-fullscreen-btn';
+        exitBtn.textContent = '✕ Poistu fullscreen';
+        exitBtn.setAttribute('aria-label', 'Poistu fullscreen-näkymästä');
+        exitBtn.addEventListener('click', exitFullscreen);
+        document.body.appendChild(exitBtn);
+    }
+    
+    // Expand all news items to show content
+    document.querySelectorAll('.news-item').forEach(item => {
+        item.classList.add('expanded');
+    });
+}
+
+// Exit fullscreen mode
+function exitFullscreen() {
+    document.body.classList.remove('fullscreen-mode');
+    
+    // Collapse all news items
+    document.querySelectorAll('.news-item').forEach(item => {
+        item.classList.remove('expanded');
+    });
 }
