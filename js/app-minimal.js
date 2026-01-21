@@ -11,14 +11,54 @@ const App = {
     infoBoxText: 'Tervetuloa organisaation tiedotuskanavalle. Tältä sivulta löydät ajankohtaiset uutiset ja tärkeimmät tiedotteet eri kategorioista. Pysy ajan tasalla!'
 };
 
+const Theme = {
+    STORAGE_KEY: 'infoahky_theme',
+    LIGHT: 'light',
+    TELETEXT: 'teletext'
+};
+
 // Initialize application
 document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
     loadMessages();
     updateDateTime();
     setInterval(updateDateTime, 60000); // Update every minute
     setupEventListeners();
     renderNewsList();
 });
+
+function initTheme() {
+    const saved = localStorage.getItem(Theme.STORAGE_KEY);
+    const theme = saved === Theme.TELETEXT ? Theme.TELETEXT : Theme.LIGHT;
+    applyTheme(theme);
+}
+
+function applyTheme(theme) {
+    const lightLink = document.getElementById('theme-light');
+    const teletextLink = document.getElementById('theme-teletext');
+
+    if (lightLink && teletextLink) {
+        lightLink.disabled = theme !== Theme.LIGHT;
+        teletextLink.disabled = theme !== Theme.TELETEXT;
+    }
+
+    document.body.dataset.theme = theme;
+    localStorage.setItem(Theme.STORAGE_KEY, theme);
+    updateThemeToggleButton(theme);
+}
+
+function toggleTheme() {
+    const current = document.body.dataset.theme === Theme.TELETEXT ? Theme.TELETEXT : Theme.LIGHT;
+    const next = current === Theme.LIGHT ? Theme.TELETEXT : Theme.LIGHT;
+    applyTheme(next);
+}
+
+function updateThemeToggleButton(theme) {
+    const btn = document.getElementById('theme-toggle-btn');
+    if (!btn) return;
+    // Button shows what you will switch to
+    btn.textContent = theme === Theme.TELETEXT ? 'Vaalea' : 'Teksti-TV';
+}
 
 // Load messages from localStorage
 function loadMessages() {
@@ -90,6 +130,12 @@ function setupEventListeners() {
 
     // Fullscreen button
     document.getElementById('fullscreen-btn').addEventListener('click', toggleFullscreen);
+
+    // Theme toggle button
+    const themeBtn = document.getElementById('theme-toggle-btn');
+    if (themeBtn) {
+        themeBtn.addEventListener('click', toggleTheme);
+    }
 
     // Form submission
     document.getElementById('message-form').addEventListener('submit', handleFormSubmit);

@@ -7,32 +7,41 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style-minimal.css">
+    <link id="theme-light" rel="stylesheet" href="css/style-light.css">
+    <link id="theme-teletext" rel="stylesheet" href="css/style-minimal.css" disabled>
 </head>
 <body>
     <div class="app-container">
-        <!-- Compact Header -->
         <header class="app-header">
             <span class="app-logo">Firma Oy</span>
             <button class="fullscreen-btn" id="fullscreen-btn" aria-label="Fullscreen-näkymä">⛶</button>
+            <button class="theme-btn" id="theme-toggle-btn" aria-label="Vaihda ulkoasu">Teksti-TV</button>
             <div class="header-time">
                 <span class="time" id="current-time"></span>
                 <span class="date" id="current-date"></span>
             </div>
         </header>
 
-        <!-- Main Content Area -->
-        <main class="app-main" id="main-content">
-            <!-- News list will be rendered here -->
-        </main>
+        <div class="teletext-screen" role="application" aria-label="Teksti-TV">
+            <div class="teletext-topbar" aria-hidden="true">
+                <span class="teletext-topbar-left">Yle</span>
+                <span class="teletext-topbar-center">100 - UUTISET</span>
+                <span class="teletext-topbar-right">FI</span>
+            </div>
+
+            <main class="app-main" id="main-content"></main>
+
+            <div class="teletext-bottombar" aria-hidden="true">
+                <span class="teletext-bottombar-left">AAKKOSELLINEN HAKEMISTO</span>
+                <span class="teletext-bottombar-right">196 - 198</span>
+            </div>
+        </div>
     </div>
 
-    <!-- Floating Action Button for adding news -->
     <div class="fab-container">
         <button class="fab-btn" id="fab-add" aria-label="Lisää viesti">+</button>
     </div>
 
-    <!-- Modal for adding/editing messages -->
     <div class="modal" id="message-modal" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
@@ -67,7 +76,6 @@
         </div>
     </div>
 
-    <!-- Modal for editing info box text -->
     <div class="modal" id="infobox-modal" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
