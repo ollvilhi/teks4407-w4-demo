@@ -15,7 +15,8 @@ const Theme = {
     STORAGE_KEY: 'infoahky_theme',
     LIGHT: 'light',
     TELETEXT: 'teletext',
-    YOUTH: 'youth'
+    YOUTH: 'youth',
+    BUSINESS: 'business'
 };
 
 // Initialize application
@@ -35,6 +36,8 @@ function initTheme() {
         theme = Theme.TELETEXT;
     } else if (saved === Theme.YOUTH) {
         theme = Theme.YOUTH;
+    } else if (saved === Theme.BUSINESS) {
+        theme = Theme.BUSINESS;
     }
     applyTheme(theme);
 }
@@ -43,11 +46,13 @@ function applyTheme(theme) {
     const lightLink = document.getElementById('theme-light');
     const teletextLink = document.getElementById('theme-teletext');
     const youthLink = document.getElementById('theme-youth');
+    const businessLink = document.getElementById('theme-business');
 
-    if (lightLink && teletextLink && youthLink) {
+    if (lightLink && teletextLink && youthLink && businessLink) {
         lightLink.disabled = theme !== Theme.LIGHT;
         teletextLink.disabled = theme !== Theme.TELETEXT;
         youthLink.disabled = theme !== Theme.YOUTH;
+        businessLink.disabled = theme !== Theme.BUSINESS;
     }
 
     document.body.dataset.theme = theme;
@@ -63,6 +68,8 @@ function toggleTheme() {
         next = Theme.TELETEXT;
     } else if (current === Theme.TELETEXT) {
         next = Theme.YOUTH;
+    } else if (current === Theme.YOUTH) {
+        next = Theme.BUSINESS;
     } else {
         next = Theme.LIGHT;
     }
@@ -78,6 +85,8 @@ function updateThemeToggleButton(theme) {
         btn.textContent = 'Teksti-TV';
     } else if (theme === Theme.TELETEXT) {
         btn.textContent = 'Nuorisoversio';
+    } else if (theme === Theme.YOUTH) {
+        btn.textContent = 'Business';
     } else {
         btn.textContent = 'Vaalea';
     }
