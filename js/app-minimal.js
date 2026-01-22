@@ -14,7 +14,8 @@ const App = {
 const Theme = {
     STORAGE_KEY: 'infoahky_theme',
     LIGHT: 'light',
-    TELETEXT: 'teletext'
+    TELETEXT: 'teletext',
+    YOUTH: 'youth'
 };
 
 // Initialize application
@@ -29,17 +30,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initTheme() {
     const saved = localStorage.getItem(Theme.STORAGE_KEY);
-    const theme = saved === Theme.TELETEXT ? Theme.TELETEXT : Theme.LIGHT;
+    let theme = Theme.LIGHT;
+    if (saved === Theme.TELETEXT) {
+        theme = Theme.TELETEXT;
+    } else if (saved === Theme.YOUTH) {
+        theme = Theme.YOUTH;
+    }
     applyTheme(theme);
 }
 
 function applyTheme(theme) {
     const lightLink = document.getElementById('theme-light');
     const teletextLink = document.getElementById('theme-teletext');
+    const youthLink = document.getElementById('theme-youth');
 
-    if (lightLink && teletextLink) {
+    if (lightLink && teletextLink && youthLink) {
         lightLink.disabled = theme !== Theme.LIGHT;
         teletextLink.disabled = theme !== Theme.TELETEXT;
+        youthLink.disabled = theme !== Theme.YOUTH;
     }
 
     document.body.dataset.theme = theme;
@@ -48,8 +56,17 @@ function applyTheme(theme) {
 }
 
 function toggleTheme() {
-    const current = document.body.dataset.theme === Theme.TELETEXT ? Theme.TELETEXT : Theme.LIGHT;
-    const next = current === Theme.LIGHT ? Theme.TELETEXT : Theme.LIGHT;
+    const current = document.body.dataset.theme || Theme.LIGHT;
+    let next;
+    
+    if (current === Theme.LIGHT) {
+        next = Theme.TELETEXT;
+    } else if (current === Theme.TELETEXT) {
+        next = Theme.YOUTH;
+    } else {
+        next = Theme.LIGHT;
+    }
+    
     applyTheme(next);
 }
 
@@ -57,7 +74,13 @@ function updateThemeToggleButton(theme) {
     const btn = document.getElementById('theme-toggle-btn');
     if (!btn) return;
     // Button shows what you will switch to
-    btn.textContent = theme === Theme.TELETEXT ? 'Vaalea' : 'Teksti-TV';
+    if (theme === Theme.LIGHT) {
+        btn.textContent = 'Teksti-TV';
+    } else if (theme === Theme.TELETEXT) {
+        btn.textContent = 'Nuorisoversio';
+    } else {
+        btn.textContent = 'Vaalea';
+    }
 }
 
 // Load messages from localStorage
@@ -591,6 +614,12 @@ function enterFullscreen() {
 // Exit fullscreen mode
 function exitFullscreen() {
     document.body.classList.remove('fullscreen-mode');
+    
+    // Remove exit button
+    const exitBtn = document.getElementById('exit-fullscreen-btn');
+    if (exitBtn) {
+        exitBtn.remove();
+    }
     
     // Collapse all news items
     document.querySelectorAll('.news-item').forEach(item => {
