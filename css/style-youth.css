@@ -519,31 +519,31 @@ body::before {
 /* Stats Bar */
 .stats-bar {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 0.625rem;
-    margin-top: 1.25rem;
-    padding: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    gap: 0.375rem;
+    margin-top: 1rem;
+    padding: 0.5rem;
     background: var(--bg-secondary);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
     border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-sm);
 }
 
 .stat-item {
     text-align: center;
-    padding: 0.75rem 0.5rem;
+    padding: 0.5rem 0.25rem;
     background: var(--bg-card);
     border-radius: var(--radius-sm);
     transition: all 0.3s ease;
 }
 
 .stat-item:hover {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
     box-shadow: var(--shadow-glow);
 }
 
 .stat-value {
-    font-size: 1.5rem;
+    font-size: 1.125rem;
     font-weight: 700;
     background: var(--accent-gradient);
     -webkit-background-clip: text;
@@ -596,10 +596,10 @@ body::before {
 }
 
 .stat-label {
-    font-size: 0.75rem;
+    font-size: 0.625rem;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
     font-weight: 600;
 }
 
@@ -821,13 +821,162 @@ form {
     overflow: hidden;
 }
 
-.fullscreen-mode .app-header,
+.fullscreen-mode .app-header {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    justify-content: center;
+    padding: 2rem 1.5rem 1rem;
+    margin-bottom: 2rem;
+}
+
+.fullscreen-mode .app-logo {
+    font-size: 3rem;
+    animation: logoGlow 3s ease-in-out infinite;
+}
+
+@keyframes logoGlow {
+    0%, 100% { 
+        filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.5));
+    }
+    50% { 
+        filter: drop-shadow(0 0 40px rgba(102, 126, 234, 0.8));
+    }
+}
+
+.fullscreen-mode .fullscreen-btn,
+.fullscreen-mode .theme-btn,
+.fullscreen-mode .header-time,
 .fullscreen-mode .fab-container {
     display: none;
 }
 
 .fullscreen-mode .app-main {
-    padding-top: 4rem;
+    padding-top: 0;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 180px);
+    overflow: hidden;
+}
+
+/* Hide everything except titles in fullscreen */
+.fullscreen-mode .filter-tabs,
+.fullscreen-mode .main-topics-title,
+.fullscreen-mode .info-box,
+.fullscreen-mode .stats-bar,
+.fullscreen-mode .empty-state {
+    display: none;
+}
+
+.fullscreen-mode .news-list {
+    gap: 1.5rem;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+.fullscreen-mode .news-item {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    cursor: default;
+    transition: none;
+}
+
+.fullscreen-mode .news-item:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.fullscreen-mode .news-item::before {
+    display: none;
+}
+
+.fullscreen-mode .news-header {
+    justify-content: center;
+    margin-bottom: 0;
+}
+
+.fullscreen-mode .news-title {
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 700;
+    text-align: center;
+    justify-content: center;
+    line-height: 1.2;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: titleFloat 4s ease-in-out infinite;
+}
+
+/* Alternating gradient colors for titles in fullscreen */
+.fullscreen-mode .news-item:nth-child(6n+1) .news-title {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.fullscreen-mode .news-item:nth-child(6n+2) .news-title {
+    background: var(--secondary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.fullscreen-mode .news-item:nth-child(6n+3) .news-title {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.fullscreen-mode .news-item:nth-child(6n+4) .news-title {
+    background: var(--success-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.fullscreen-mode .news-item:nth-child(6n+5) .news-title {
+    background: var(--orange-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.fullscreen-mode .news-item:nth-child(6n) .news-title {
+    background: var(--pink-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+@keyframes titleFloat {
+    0%, 100% { 
+        transform: translateY(0);
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    }
+    50% { 
+        transform: translateY(-5px);
+        filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+    }
+}
+
+.fullscreen-mode .main-topic-badge {
+    font-size: 2rem;
+    width: 48px;
+    height: 48px;
+}
+
+.fullscreen-mode .news-right,
+.fullscreen-mode .news-content,
+.fullscreen-mode .news-actions {
+    display: none;
 }
 
 .exit-fullscreen-btn {

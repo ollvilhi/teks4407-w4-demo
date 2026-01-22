@@ -615,6 +615,12 @@ function enterFullscreen() {
 function exitFullscreen() {
     document.body.classList.remove('fullscreen-mode');
     
+    // Remove exit button
+    const exitBtn = document.getElementById('exit-fullscreen-btn');
+    if (exitBtn) {
+        exitBtn.remove();
+    }
+    
     // Collapse all news items
     document.querySelectorAll('.news-item').forEach(item => {
         item.classList.remove('expanded');
