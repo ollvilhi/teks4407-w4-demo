@@ -140,6 +140,9 @@ function setupEventListeners() {
     // FAB button
     document.getElementById('fab-add').addEventListener('click', () => openModal());
 
+    // Viewing mode button
+    document.getElementById('viewing-mode-btn').addEventListener('click', toggleViewingMode);
+
     // Fullscreen button
     document.getElementById('fullscreen-btn').addEventListener('click', toggleFullscreen);
 
@@ -614,6 +617,49 @@ function exitFullscreen() {
     }
     
     // Collapse all news items
+    document.querySelectorAll('.news-item').forEach(item => {
+        item.classList.remove('expanded');
+    });
+}
+
+// Toggle viewing mode
+function toggleViewingMode() {
+    const isViewingMode = document.body.classList.contains('viewing-mode');
+    
+    if (isViewingMode) {
+        exitViewingMode();
+    } else {
+        enterViewingMode();
+    }
+}
+
+// Enter viewing mode (compact, read-only view)
+function enterViewingMode() {
+    document.body.classList.add('viewing-mode');
+    
+    // Add exit button if not exists
+    if (!document.getElementById('exit-viewing-btn')) {
+        const exitBtn = document.createElement('button');
+        exitBtn.id = 'exit-viewing-btn';
+        exitBtn.className = 'exit-viewing-btn';
+        exitBtn.textContent = '✕ Poistu katselutilasta';
+        exitBtn.setAttribute('aria-label', 'Poistu katselutilasta');
+        exitBtn.addEventListener('click', exitViewingMode);
+        document.body.appendChild(exitBtn);
+    }
+}
+
+// Exit viewing mode
+function exitViewingMode() {
+    document.body.classList.remove('viewing-mode');
+    
+    // Remove exit button
+    const exitBtn = document.getElementById('exit-viewing-btn');
+    if (exitBtn) {
+        exitBtn.remove();
+    }
+    
+    // Collapse all expanded items
     document.querySelectorAll('.news-item').forEach(item => {
         item.classList.remove('expanded');
     });
