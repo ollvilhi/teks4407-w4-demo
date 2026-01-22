@@ -15,7 +15,8 @@ const Theme = {
     STORAGE_KEY: 'infoahky_theme',
     LIGHT: 'light',
     TELETEXT: 'teletext',
-    YOUTH: 'youth'
+    YOUTH: 'youth',
+    BUSINESS: 'business'
 };
 
 // Initialize application
@@ -35,6 +36,8 @@ function initTheme() {
         theme = Theme.TELETEXT;
     } else if (saved === Theme.YOUTH) {
         theme = Theme.YOUTH;
+    } else if (saved === Theme.BUSINESS) {
+        theme = Theme.BUSINESS;
     }
     applyTheme(theme);
 }
@@ -43,44 +46,30 @@ function applyTheme(theme) {
     const lightLink = document.getElementById('theme-light');
     const teletextLink = document.getElementById('theme-teletext');
     const youthLink = document.getElementById('theme-youth');
+    const businessLink = document.getElementById('theme-business');
 
-    if (lightLink && teletextLink && youthLink) {
+    if (lightLink && teletextLink && youthLink && businessLink) {
         lightLink.disabled = theme !== Theme.LIGHT;
         teletextLink.disabled = theme !== Theme.TELETEXT;
         youthLink.disabled = theme !== Theme.YOUTH;
+        businessLink.disabled = theme !== Theme.BUSINESS;
     }
 
     document.body.dataset.theme = theme;
     localStorage.setItem(Theme.STORAGE_KEY, theme);
-    updateThemeToggleButton(theme);
+    updateThemeButtons(theme);
 }
 
-function toggleTheme() {
-    const current = document.body.dataset.theme || Theme.LIGHT;
-    let next;
-    
-    if (current === Theme.LIGHT) {
-        next = Theme.TELETEXT;
-    } else if (current === Theme.TELETEXT) {
-        next = Theme.YOUTH;
-    } else {
-        next = Theme.LIGHT;
-    }
-    
-    applyTheme(next);
-}
-
-function updateThemeToggleButton(theme) {
-    const btn = document.getElementById('theme-toggle-btn');
-    if (!btn) return;
-    // Button shows what you will switch to
-    if (theme === Theme.LIGHT) {
-        btn.textContent = 'Teksti-TV';
-    } else if (theme === Theme.TELETEXT) {
-        btn.textContent = 'Nuorisoversio';
-    } else {
-        btn.textContent = 'Vaalea';
-    }
+function updateThemeButtons(theme) {
+    const buttons = document.querySelectorAll('.theme-selector-btn');
+    buttons.forEach(btn => {
+        const btnTheme = btn.dataset.theme;
+        if (btnTheme === theme) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
 }
 
 // Load messages from localStorage
@@ -154,11 +143,14 @@ function setupEventListeners() {
     // Fullscreen button
     document.getElementById('fullscreen-btn').addEventListener('click', toggleFullscreen);
 
-    // Theme toggle button
-    const themeBtn = document.getElementById('theme-toggle-btn');
-    if (themeBtn) {
-        themeBtn.addEventListener('click', toggleTheme);
-    }
+    // Theme selector buttons
+    const themeButtons = document.querySelectorAll('.theme-selector-btn');
+    themeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const theme = btn.dataset.theme;
+            applyTheme(theme);
+        });
+    });
 
     // Form submission
     document.getElementById('message-form').addEventListener('submit', handleFormSubmit);
@@ -272,7 +264,7 @@ function renderNewsList() {
                 html += `
                     <li class="news-item main-topic-item" data-id="${msg.id}">
                         <div class="news-header">
-                            <div class="news-title">${getMainTopicBadge(msg.isMainTopic)}${escapeHtml(msg.title)}</div>
+                            <div class="news-title">${escapeHtml(msg.title)}</div>
                             <div class="news-right">
                                 <span class="news-category ${msg.category}">${categoryLabel}</span>
                                 <div class="news-meta">${formatDate(msg.created)}</div>

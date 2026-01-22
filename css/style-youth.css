@@ -49,6 +49,43 @@ body {
     overflow-x: hidden;
 }
 
+/* Theme selector at top */
+.theme-selector {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px;
+    background: var(--bg-secondary);
+    border-bottom: 2px solid var(--border-color);
+    flex-wrap: wrap;
+}
+
+.theme-selector-btn {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 8px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.theme-selector-btn:hover {
+    background: var(--bg-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.theme-selector-btn.active {
+    background: var(--primary-gradient);
+    color: white;
+    border-color: transparent;
+    box-shadow: var(--shadow-glow);
+}
+
 /* Animated background */
 body::before {
     content: '';
