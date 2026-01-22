@@ -967,12 +967,17 @@ body.viewing-mode .app-logo {
 body.viewing-mode .header-time,
 body.viewing-mode .fab-container,
 body.viewing-mode .info-box,
-body.viewing-mode .main-topics-title {
+body.viewing-mode .main-topics-title,
+body.viewing-mode .stats-bar {
     display: none;
 }
 
 body.viewing-mode .app-main {
     padding: 16px 24px;
+}
+
+body.viewing-mode .filter-tabs {
+    margin-bottom: 16px;
 }
 
 body.viewing-mode .news-list {

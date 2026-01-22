@@ -630,7 +630,7 @@ body {
 }
 
 .news-item:nth-child(even) {
-    background: #f8fafc;
+    background: #f1f5f9;
 }
 
 /* Responsive - desktop adjustments */
@@ -800,6 +800,7 @@ body {
     letter-spacing: 0.08em;
     padding: 12px 16px 8px;
     margin: 0;
+    border-bottom: 1px solid var(--border-light);
 }
 
 /* Main topic badge (star) */
@@ -946,7 +947,8 @@ body.viewing-mode .theme-selector,
 body.viewing-mode .fab-container,
 body.viewing-mode .info-box,
 body.viewing-mode .main-topics-title,
-body.viewing-mode .header-time {
+body.viewing-mode .header-time,
+body.viewing-mode .stats-bar {
     display: none;
 }
 
@@ -957,6 +959,10 @@ body.viewing-mode .app-header {
 
 body.viewing-mode .app-main {
     padding: 12px;
+}
+
+body.viewing-mode .filter-tabs {
+    margin-bottom: 12px;
 }
 
 body.viewing-mode .news-list {

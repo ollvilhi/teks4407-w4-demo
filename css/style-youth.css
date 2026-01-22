@@ -1118,7 +1118,8 @@ body.viewing-mode .theme-selector,
 body.viewing-mode .fab-container,
 body.viewing-mode .info-box,
 body.viewing-mode .main-topics-title,
-body.viewing-mode .header-time {
+body.viewing-mode .header-time,
+body.viewing-mode .stats-bar {
     display: none;
 }
 
@@ -1128,6 +1129,10 @@ body.viewing-mode .app-header {
 
 body.viewing-mode .app-main {
     padding: 1rem;
+}
+
+body.viewing-mode .filter-tabs {
+    margin-bottom: 1rem;
 }
 
 body.viewing-mode .news-list {

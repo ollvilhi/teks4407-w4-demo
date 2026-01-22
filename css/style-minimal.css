@@ -872,12 +872,17 @@ body.viewing-mode .info-box,
 body.viewing-mode .main-topics-title,
 body.viewing-mode .header-time,
 body.viewing-mode .teletext-topbar,
-body.viewing-mode .teletext-bottombar {
+body.viewing-mode .teletext-bottombar,
+body.viewing-mode .stats-bar {
     display: none;
 }
 
 body.viewing-mode .app-header {
     padding: 6px 8px;
+}
+
+body.viewing-mode .filter-tabs {
+    margin-bottom: 10px;
 }
 
 body.viewing-mode .news-list {
