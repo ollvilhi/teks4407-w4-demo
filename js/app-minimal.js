@@ -264,7 +264,7 @@ function renderNewsList() {
                 html += `
                     <li class="news-item main-topic-item" data-id="${msg.id}">
                         <div class="news-header">
-                            <div class="news-title">${getMainTopicBadge(msg.isMainTopic)}${escapeHtml(msg.title)}</div>
+                            <div class="news-title">${escapeHtml(msg.title)}</div>
                             <div class="news-right">
                                 <span class="news-category ${msg.category}">${categoryLabel}</span>
                                 <div class="news-meta">${formatDate(msg.created)}</div>
