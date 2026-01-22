@@ -111,7 +111,8 @@ body {
     color: var(--text-secondary);
 }
 
-.fullscreen-btn {
+.fullscreen-btn,
+.viewing-mode-btn {
     background: none;
     border: none;
     font-size: 1.2rem;
@@ -121,7 +122,8 @@ body {
     transition: color 0.15s;
 }
 
-.fullscreen-btn:hover {
+.fullscreen-btn:hover,
+.viewing-mode-btn:hover {
     color: var(--primary);
 }
 
@@ -937,5 +939,105 @@ body.fullscreen-mode .exit-fullscreen-btn {
 .exit-fullscreen-btn:hover {
     background: rgba(255, 255, 255, 0.2);
     border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Viewing mode - Compact, read-only layout */
+body.viewing-mode .theme-selector,
+body.viewing-mode .fab-container,
+body.viewing-mode .info-box,
+body.viewing-mode .main-topics-title,
+body.viewing-mode .header-time {
+    display: none;
+}
+
+body.viewing-mode .app-header {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+body.viewing-mode .app-main {
+    padding: 12px;
+}
+
+body.viewing-mode .news-list {
+    gap: 1px;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+body.viewing-mode .news-item {
+    border: none;
+    border-bottom: 1px solid var(--border-light);
+    border-radius: 0;
+    padding: 10px 12px;
+}
+
+body.viewing-mode .news-item:last-child {
+    border-bottom: none;
+}
+
+body.viewing-mode .news-item.expanded {
+    padding: 16px;
+    border-bottom: 2px solid var(--primary);
+}
+
+body.viewing-mode .news-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+body.viewing-mode .news-item.expanded .news-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+body.viewing-mode .news-category {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+}
+
+body.viewing-mode .news-meta {
+    font-size: 0.75rem;
+}
+
+body.viewing-mode .news-item:not(.expanded) .news-content {
+    display: none;
+}
+
+body.viewing-mode .news-item.expanded .news-content {
+    display: block;
+    white-space: normal;
+    line-height: 1.6;
+}
+
+body.viewing-mode .news-actions {
+    display: none !important;
+}
+
+.exit-viewing-btn {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    z-index: 200;
+    display: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+body.viewing-mode .exit-viewing-btn {
+    display: block;
+}
+
+.exit-viewing-btn:hover {
+    background: var(--bg-secondary);
+    border-color: var(--primary);
 }
 
