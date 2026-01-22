@@ -57,39 +57,19 @@ function applyTheme(theme) {
 
     document.body.dataset.theme = theme;
     localStorage.setItem(Theme.STORAGE_KEY, theme);
-    updateThemeToggleButton(theme);
+    updateThemeButtons(theme);
 }
 
-function toggleTheme() {
-    const current = document.body.dataset.theme || Theme.LIGHT;
-    let next;
-    
-    if (current === Theme.LIGHT) {
-        next = Theme.TELETEXT;
-    } else if (current === Theme.TELETEXT) {
-        next = Theme.YOUTH;
-    } else if (current === Theme.YOUTH) {
-        next = Theme.BUSINESS;
-    } else {
-        next = Theme.LIGHT;
-    }
-    
-    applyTheme(next);
-}
-
-function updateThemeToggleButton(theme) {
-    const btn = document.getElementById('theme-toggle-btn');
-    if (!btn) return;
-    // Button shows what you will switch to
-    if (theme === Theme.LIGHT) {
-        btn.textContent = 'Teksti-TV';
-    } else if (theme === Theme.TELETEXT) {
-        btn.textContent = 'Nuorisoversio';
-    } else if (theme === Theme.YOUTH) {
-        btn.textContent = 'Business';
-    } else {
-        btn.textContent = 'Vaalea';
-    }
+function updateThemeButtons(theme) {
+    const buttons = document.querySelectorAll('.theme-selector-btn');
+    buttons.forEach(btn => {
+        const btnTheme = btn.dataset.theme;
+        if (btnTheme === theme) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
 }
 
 // Load messages from localStorage
@@ -163,11 +143,14 @@ function setupEventListeners() {
     // Fullscreen button
     document.getElementById('fullscreen-btn').addEventListener('click', toggleFullscreen);
 
-    // Theme toggle button
-    const themeBtn = document.getElementById('theme-toggle-btn');
-    if (themeBtn) {
-        themeBtn.addEventListener('click', toggleTheme);
-    }
+    // Theme selector buttons
+    const themeButtons = document.querySelectorAll('.theme-selector-btn');
+    themeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const theme = btn.dataset.theme;
+            applyTheme(theme);
+        });
+    });
 
     // Form submission
     document.getElementById('message-form').addEventListener('submit', handleFormSubmit);

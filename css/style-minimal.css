@@ -30,6 +30,42 @@ body {
     font-size: clamp(14px, 2.0vw, 18px);
 }
 
+/* Theme selector at top */
+.theme-selector {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px;
+    background: var(--tt-blue);
+    border-bottom: 2px solid var(--tt-cyan);
+    flex-wrap: wrap;
+}
+
+.theme-selector-btn {
+    background: var(--tt-black);
+    color: var(--tt-yellow);
+    border: 2px solid var(--tt-cyan);
+    padding: 6px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 0;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    text-transform: uppercase;
+}
+
+.theme-selector-btn:hover {
+    background: var(--tt-cyan);
+    color: var(--tt-black);
+}
+
+.theme-selector-btn.active {
+    background: var(--tt-yellow);
+    color: var(--tt-black);
+    border-color: var(--tt-yellow);
+}
+
 .app-container {
     max-width: 980px;
     margin: 0 auto;

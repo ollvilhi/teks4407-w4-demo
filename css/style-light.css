@@ -32,6 +32,41 @@ body {
     line-height: 1.5;
 }
 
+/* Theme selector at top */
+.theme-selector {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-light);
+    flex-wrap: wrap;
+}
+
+.theme-selector-btn {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-light);
+    padding: 6px 16px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.theme-selector-btn:hover {
+    background: var(--bg-secondary);
+    border-color: var(--primary);
+}
+
+.theme-selector-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
 /* Main container - full width on mobile */
 .app-container {
     max-width: 600px;
