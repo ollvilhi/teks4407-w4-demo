@@ -20,9 +20,9 @@ const Theme = {
 };
 
 // Initialize application
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     initTheme();
-    loadMessages();
+    await loadMessages();
     updateDateTime();
     setInterval(updateDateTime, 60000); // Update every minute
     setupEventListeners();
@@ -72,34 +72,49 @@ function updateThemeButtons(theme) {
     });
 }
 
-// Load messages from localStorage
-function loadMessages() {
+// Load messages from localStorage or JSON file
+async function loadMessages() {
+    try {
+        const response = await fetch('uutiset.json');
+        if (response.ok) {
+            const data = await response.json();
+            if (Array.isArray(data) && data.length > 0) {
+                // Map JSON data to App.messages structure
+                const categories = ['johto', 'tuotekehitys', 'it-tuki', 'turvallisuus', 'hr'];
+
+                App.messages = data.map((item, index) => {
+                    // Parse date from D.M.YYYY to ISO
+                    const created = parseDate(item.Date);
+
+                    return {
+                        id: generateId(),
+                        title: item.Title,
+                        content: item.Description,
+                        category: categories[index % categories.length], // Round-robin categories
+                        created: created,
+                        updated: created,
+                        isMainTopic: index === 0 // Make the first one a main topic
+                    };
+                });
+
+                // Save to localStorage so we have them for next time (or if file load fails)
+                saveMessages();
+                return;
+            }
+        }
+    } catch (error) {
+        console.error('Failed to load uutiset.json:', error);
+    }
+
+    // Fallback to localStorage if file load failed
     const stored = localStorage.getItem('infoahky_messages');
     if (stored) {
         App.messages = JSON.parse(stored);
     } else {
-        // Add sample messages for first visit
-        App.messages = [
-            {
-                id: generateId(),
-                title: 'Tervetuloa InfoAHKY:yn',
-                content: 'Tämä on organisaatiosi tiedotuskanava. Napauta viestiä lukeaksesi sen. Lisää uusi viesti + -painikkeella.',
-                category: 'tuotekehitys',
-                created: new Date().toISOString(),
-                updated: new Date().toISOString()
-            },
-            {
-                id: generateId(),
-                title: 'Järjestelmä käytössä',
-                content: 'InfoAHKY on nyt aktiivisessa käytössä. Viestit tallentuvat selaimen muistiin.',
-                category: 'johto',
-                created: new Date(Date.now() - 3600000).toISOString(),
-                updated: new Date(Date.now() - 3600000).toISOString()
-            }
-        ];
+        App.messages = [];
         saveMessages();
     }
-    
+
     // Load info box text from localStorage
     const storedInfoBoxText = localStorage.getItem('infoahky_infobox_text');
     if (storedInfoBoxText) {
@@ -122,15 +137,37 @@ function generateId() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
+// Parse date from D.M.YYYY to ISO string
+function parseDate(dateStr) {
+    if (!dateStr) return new Date().toISOString();
+
+    // Check if it matches D.M.YYYY format
+    const parts = dateStr.split('.');
+    if (parts.length === 3) {
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1; // Months are 0-indexed
+        const year = parseInt(parts[2], 10);
+
+        const date = new Date(year, month, day);
+        // Add some random time to differentiate messages on same day
+        date.setHours(Math.floor(Math.random() * 12) + 8); // 8:00 - 20:00
+        date.setMinutes(Math.floor(Math.random() * 60));
+
+        return date.toISOString();
+    }
+
+    return new Date().toISOString();
+}
+
 // Update date and time display
 function updateDateTime() {
     const now = new Date();
     const timeStr = now.toLocaleTimeString('fi-FI', { hour: '2-digit', minute: '2-digit' });
     const dateStr = now.toLocaleDateString('fi-FI', { weekday: 'short', day: 'numeric', month: 'numeric' });
-    
+
     const timeEl = document.getElementById('current-time');
     const dateEl = document.getElementById('current-date');
-    
+
     if (timeEl) timeEl.textContent = timeStr;
     if (dateEl) dateEl.textContent = dateStr;
 }
@@ -157,7 +194,7 @@ function setupEventListeners() {
 
     // Form submission
     document.getElementById('message-form').addEventListener('submit', handleFormSubmit);
-    
+
     // Cancel and close buttons
     document.getElementById('cancel-btn').addEventListener('click', closeModal);
     document.getElementById('modal-close-btn').addEventListener('click', closeModal);
@@ -214,13 +251,13 @@ function handleKeyboard(e) {
 // Render news list - the main view
 function renderNewsList() {
     const container = document.getElementById('main-content');
-    
+
     // Filter messages
     let filtered = [...App.messages];
     if (App.currentFilter !== 'all' && App.currentFilter !== 'aloitus') {
         filtered = filtered.filter(m => m.category === App.currentFilter);
     }
-    
+
     // Sort by date, newest first
     filtered.sort((a, b) => new Date(b.created) - new Date(a.created));
 
@@ -242,7 +279,7 @@ function renderNewsList() {
         // Get main topics from each category (one per category)
         const categories = ['johto', 'tuotekehitys', 'it-tuki', 'turvallisuus', 'hr'];
         const mainTopics = [];
-        
+
         categories.forEach(cat => {
             // First try to find a message marked as main topic
             let mainMsg = App.messages.find(m => m.category === cat && m.isMainTopic);
@@ -258,7 +295,7 @@ function renderNewsList() {
                 mainTopics.push(mainMsg);
             }
         });
-        
+
         if (mainTopics.length > 0) {
             html += '<h3 class="main-topics-title">Pääaiheet</h3>';
             html += '<ul class="news-list main-topics-list">';
@@ -286,7 +323,7 @@ function renderNewsList() {
                 </div>
             `;
         }
-        
+
         // Info box with edit button - now placed after news items
         html += `
             <div class="info-box">
@@ -332,7 +369,7 @@ function renderNewsList() {
         acc[m.category] = (acc[m.category] || 0) + 1;
         return acc;
     }, {});
-    
+
     html += `
         <div class="stats-bar">
             <div class="stat-item">
@@ -405,12 +442,12 @@ function renderNewsList() {
 // Open modal for adding/editing
 function openModal(message = null) {
     App.editingId = message ? message.id : null;
-    
+
     document.getElementById('message-id').value = message ? message.id : '';
     document.getElementById('message-title').value = message ? message.title : '';
     document.getElementById('message-content').value = message ? message.content : '';
     document.getElementById('message-category').value = message ? message.category : 'johto';
-    
+
     document.querySelector('.modal-title').textContent = message ? 'Muokkaa viestiä' : 'Lisää viesti';
     document.getElementById('message-modal').style.display = 'flex';
     document.getElementById('message-title').focus();
@@ -451,11 +488,11 @@ function handleInfoBoxSubmit(e) {
 // Handle form submission
 function handleFormSubmit(e) {
     e.preventDefault();
-    
+
     const title = document.getElementById('message-title').value.trim();
     const content = document.getElementById('message-content').value.trim();
     const category = document.getElementById('message-category').value;
-    
+
     if (!title || !content) {
         return;
     }
@@ -481,7 +518,7 @@ function handleFormSubmit(e) {
         };
         App.messages.push(newMessage);
     }
-    
+
     saveMessages();
     closeModal();
     renderNewsList();
@@ -508,7 +545,7 @@ function deleteMessage(id) {
 function toggleMainTopic(id) {
     const message = App.messages.find(m => m.id === id);
     if (!message) return;
-    
+
     if (message.isMainTopic) {
         // Unmark as main topic
         message.isMainTopic = false;
@@ -522,7 +559,7 @@ function toggleMainTopic(id) {
         // Mark this message as main topic
         message.isMainTopic = true;
     }
-    
+
     saveMessages();
     renderNewsList();
 }
@@ -532,7 +569,7 @@ function formatDate(dateStr) {
     const date = new Date(dateStr);
     const now = new Date();
     const diff = now - date;
-    
+
     // If less than 24 hours, show relative time
     if (diff < 86400000) {
         const hours = Math.floor(diff / 3600000);
@@ -542,7 +579,7 @@ function formatDate(dateStr) {
         }
         return `${hours} h sitten`;
     }
-    
+
     // Otherwise show date
     return date.toLocaleDateString('fi-FI', {
         day: 'numeric',
@@ -577,7 +614,7 @@ function escapeHtml(text) {
 // Toggle fullscreen mode
 function toggleFullscreen() {
     const isFullscreen = document.body.classList.contains('fullscreen-mode');
-    
+
     if (isFullscreen) {
         exitFullscreen();
     } else {
@@ -588,7 +625,7 @@ function toggleFullscreen() {
 // Enter fullscreen mode
 function enterFullscreen() {
     document.body.classList.add('fullscreen-mode');
-    
+
     // Add exit button if not exists
     if (!document.getElementById('exit-fullscreen-btn')) {
         const exitBtn = document.createElement('button');
@@ -599,7 +636,7 @@ function enterFullscreen() {
         exitBtn.addEventListener('click', exitFullscreen);
         document.body.appendChild(exitBtn);
     }
-    
+
     // Expand all news items to show content
     document.querySelectorAll('.news-item').forEach(item => {
         item.classList.add('expanded');
@@ -609,13 +646,13 @@ function enterFullscreen() {
 // Exit fullscreen mode
 function exitFullscreen() {
     document.body.classList.remove('fullscreen-mode');
-    
+
     // Remove exit button
     const exitBtn = document.getElementById('exit-fullscreen-btn');
     if (exitBtn) {
         exitBtn.remove();
     }
-    
+
     // Collapse all news items
     document.querySelectorAll('.news-item').forEach(item => {
         item.classList.remove('expanded');
@@ -625,7 +662,7 @@ function exitFullscreen() {
 // Toggle viewing mode
 function toggleViewingMode() {
     const isViewingMode = document.body.classList.contains('viewing-mode');
-    
+
     if (isViewingMode) {
         exitViewingMode();
     } else {
@@ -636,7 +673,7 @@ function toggleViewingMode() {
 // Enter viewing mode (compact, read-only view)
 function enterViewingMode() {
     document.body.classList.add('viewing-mode');
-    
+
     // Add exit button if not exists
     if (!document.getElementById('exit-viewing-btn')) {
         const exitBtn = document.createElement('button');
@@ -652,13 +689,13 @@ function enterViewingMode() {
 // Exit viewing mode
 function exitViewingMode() {
     document.body.classList.remove('viewing-mode');
-    
+
     // Remove exit button
     const exitBtn = document.getElementById('exit-viewing-btn');
     if (exitBtn) {
         exitBtn.remove();
     }
-    
+
     // Collapse all expanded items
     document.querySelectorAll('.news-item').forEach(item => {
         item.classList.remove('expanded');
