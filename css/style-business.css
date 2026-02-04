@@ -309,22 +309,22 @@ body {
 }
 
 /* Category colors */
-.news-category.johto {
+.news-category.uutisia {
     background: #e6f2ff;
     color: #0066cc;
 }
 
-.news-category.tuotekehitys {
+.news-category.tutkimus {
     background: #e6f7f0;
     color: #00875a;
 }
 
-.news-category.it-tuki {
+.news-category.yritysyhteistyö {
     background: #f0e6ff;
     color: #6b47dc;
 }
 
-.news-category.turvallisuus {
+.news-category.opintohallinto {
     background: #fff3e6;
     color: #cc6600;
 }
