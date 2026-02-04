@@ -80,8 +80,6 @@ async function loadMessages() {
             const data = await response.json();
             if (Array.isArray(data) && data.length > 0) {
                 // Map JSON data to App.messages structure
-                const categories = ['uutisia', 'tutkimus', 'yritysyhteistyö', 'opintohallinto', 'hr'];
-
                 App.messages = data.map((item, index) => {
                     // Parse date from D.M.YYYY to ISO
                     const created = parseDate(item.Date);
@@ -90,7 +88,7 @@ async function loadMessages() {
                         id: generateId(),
                         title: item.Title,
                         content: item.Description,
-                        category: categories[index % categories.length], // Round-robin categories
+                        category: item.Category || 'uutisia', // Use Category from JSON, fallback to 'uutisia'
                         created: created,
                         updated: created,
                         isMainTopic: index === 0 // Make the first one a main topic
@@ -373,20 +371,20 @@ function renderNewsList() {
     html += `
         <div class="stats-bar">
             <div class="stat-item">
-                <div class="stat-value">${categoryCounts['johto'] || 0}</div>
-                <div class="stat-label">Johto</div>
+                <div class="stat-value">${categoryCounts['uutisia'] || 0}</div>
+                <div class="stat-label">Uutisia</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value">${categoryCounts['tuotekehitys'] || 0}</div>
-                <div class="stat-label">Tuotekehitys</div>
+                <div class="stat-value">${categoryCounts['tutkimus'] || 0}</div>
+                <div class="stat-label">Tutkimus</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value">${categoryCounts['it-tuki'] || 0}</div>
-                <div class="stat-label">IT-tuki</div>
+                <div class="stat-value">${categoryCounts['yritysyhteistyö'] || 0}</div>
+                <div class="stat-label">Yritysyhteistyö</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value">${categoryCounts['turvallisuus'] || 0}</div>
-                <div class="stat-label">Turvallisuus</div>
+                <div class="stat-value">${categoryCounts['opintohallinto'] || 0}</div>
+                <div class="stat-label">Opintohallinto</div>
             </div>
             <div class="stat-item">
                 <div class="stat-value">${categoryCounts['hr'] || 0}</div>
