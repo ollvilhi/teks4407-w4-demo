@@ -413,22 +413,22 @@ body::before {
     letter-spacing: 0.5px;
 }
 
-.news-category.johto {
+.news-category.uutisia {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
 }
 
-.news-category.tuotekehitys {
+.news-category.tutkimus {
     background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     color: white;
 }
 
-.news-category.it-tuki {
+.news-category.yritysyhteistyö {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     color: white;
 }
 
-.news-category.turvallisuus {
+.news-category.opintohallinto {
     background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
     color: white;
 }

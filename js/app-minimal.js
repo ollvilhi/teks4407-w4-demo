@@ -80,7 +80,7 @@ async function loadMessages() {
             const data = await response.json();
             if (Array.isArray(data) && data.length > 0) {
                 // Map JSON data to App.messages structure
-                const categories = ['johto', 'tuotekehitys', 'it-tuki', 'turvallisuus', 'hr'];
+                const categories = ['uutisia', 'tutkimus', 'yritysyhteistyö', 'opintohallinto', 'hr'];
 
                 App.messages = data.map((item, index) => {
                     // Parse date from D.M.YYYY to ISO
@@ -266,10 +266,10 @@ function renderNewsList() {
         <div class="filter-tabs">
             <button class="filter-tab ${App.currentFilter === 'aloitus' ? 'active' : ''}" data-filter="aloitus">Aloitus</button>
             <button class="filter-tab ${App.currentFilter === 'all' ? 'active' : ''}" data-filter="all">Kaikki</button>
-            <button class="filter-tab ${App.currentFilter === 'johto' ? 'active' : ''}" data-filter="johto">Johto</button>
-            <button class="filter-tab ${App.currentFilter === 'tuotekehitys' ? 'active' : ''}" data-filter="tuotekehitys">Tuotekehitys</button>
-            <button class="filter-tab ${App.currentFilter === 'it-tuki' ? 'active' : ''}" data-filter="it-tuki">IT-tuki</button>
-            <button class="filter-tab ${App.currentFilter === 'turvallisuus' ? 'active' : ''}" data-filter="turvallisuus">Turvallisuus</button>
+            <button class="filter-tab ${App.currentFilter === 'uutisia' ? 'active' : ''}" data-filter="uutisia">Uutisia</button>
+            <button class="filter-tab ${App.currentFilter === 'tutkimus' ? 'active' : ''}" data-filter="tutkimus">Tutkimus</button>
+            <button class="filter-tab ${App.currentFilter === 'yritysyhteistyö' ? 'active' : ''}" data-filter="yritysyhteistyö">Yritysyhteistyö</button>
+            <button class="filter-tab ${App.currentFilter === 'opintohallinto' ? 'active' : ''}" data-filter="opintohallinto">Opintohallinto</button>
             <button class="filter-tab ${App.currentFilter === 'hr' ? 'active' : ''}" data-filter="hr">HR</button>
         </div>
     `;
@@ -277,7 +277,7 @@ function renderNewsList() {
     // Handle start view (aloitusnäkymä) - show one main topic per category, then info box below
     if (App.currentFilter === 'aloitus') {
         // Get main topics from each category (one per category)
-        const categories = ['johto', 'tuotekehitys', 'it-tuki', 'turvallisuus', 'hr'];
+        const categories = ['uutisia', 'tutkimus', 'yritysyhteistyö', 'opintohallinto', 'hr'];
         const mainTopics = [];
 
         categories.forEach(cat => {

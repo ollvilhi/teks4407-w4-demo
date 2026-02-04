@@ -248,19 +248,19 @@ body {
     flex-shrink: 0;
 }
 
-.news-category.johto {
+.news-category.uutisia {
     color: var(--tt-yellow);
 }
 
-.news-category.tuotekehitys {
+.news-category.tutkimus {
     color: var(--tt-green);
 }
 
-.news-category.it-tuki {
+.news-category.yritysyhteistyö {
     color: var(--tt-cyan);
 }
 
-.news-category.turvallisuus {
+.news-category.opintohallinto {
     color: var(--tt-magenta);
 }
 
@@ -633,10 +633,10 @@ body {
 /* Teletext-like page numbers for filters */
 .filter-tab[data-filter="aloitus"]::before { content: "100 "; color: var(--tt-white); }
 .filter-tab[data-filter="all"]::before { content: "199 "; color: var(--tt-gray); }
-.filter-tab[data-filter="johto"]::before { content: "110 "; color: var(--tt-yellow); }
-.filter-tab[data-filter="tuotekehitys"]::before { content: "120 "; color: var(--tt-green); }
-.filter-tab[data-filter="it-tuki"]::before { content: "130 "; color: var(--tt-cyan); }
-.filter-tab[data-filter="turvallisuus"]::before { content: "140 "; color: var(--tt-magenta); }
+.filter-tab[data-filter="uutisia"]::before { content: "110 "; color: var(--tt-yellow); }
+.filter-tab[data-filter="tutkimus"]::before { content: "120 "; color: var(--tt-green); }
+.filter-tab[data-filter="yritysyhteistyö"]::before { content: "130 "; color: var(--tt-cyan); }
+.filter-tab[data-filter="opintohallinto"]::before { content: "140 "; color: var(--tt-magenta); }
 .filter-tab[data-filter="hr"]::before { content: "150 "; color: var(--tt-white); }
 
 /* Responsive - desktop adjustments */
